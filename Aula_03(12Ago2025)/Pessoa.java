@@ -28,6 +28,6 @@ public class Pessoa{
     }
 
     public String toString(){
-        return "Nome: "+ getNome() + " || Idade: " + getIdade();
+        return "Nome: "+ getNome() + "  Idade: " + getIdade();
     }
 }
