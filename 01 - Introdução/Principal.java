@@ -3,7 +3,7 @@ public class Principal{
 
         Pessoa obj1 = new Pessoa();
         Pessoa obj2 = new Pessoa("Joaquim", 1);
-        Pessoa obj3 = new Pessoa("Cecilia", 2, 777777l);
+        Pessoa obj3 = new Pessoa("Cecilia", 2);
         Professor objP = new Professor("Rafael", 34, 888888888l, 579);
         Aluno objA = new Aluno("Gabriel", 28, 55555555l, 779);
 

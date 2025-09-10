@@ -6,7 +6,7 @@ public class Aluno extends Pessoa{
     }
 
     public Aluno(String nome, int idade, long cpf, int idAluno){
-        super(nome, idade, cpf);
+        super(nome, idade);
         setIdAluno(idAluno);
     }
 

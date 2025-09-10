@@ -1,5 +1,5 @@
 # Estrutura-de-Dados-I
 Estrutura de Dados I
 git add .
-git commit -m "Código da Aula do Dia 01/01/2000"
+git commit -m "Organização das Pastas"
 git push origin main

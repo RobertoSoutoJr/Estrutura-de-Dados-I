@@ -6,7 +6,7 @@ public class Professor extends Pessoa{
     }
 
     public Professor(String nome, int idade, long cpf, int idProfessor){
-        super(nome, idade, cpf);
+        super(nome, idade);
         setIdProfessor(idProfessor);
     }
 
