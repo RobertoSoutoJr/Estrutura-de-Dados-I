@@ -13,5 +13,9 @@ public class Principal {
         lista.addMeio("Pedro", 2);
 
         lista.imprimeLista();
+
+        lista.removeMeio(1);
+        
+        lista.imprimeLista();
     }
 }

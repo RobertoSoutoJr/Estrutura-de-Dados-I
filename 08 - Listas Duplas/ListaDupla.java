@@ -27,7 +27,7 @@ public class ListaDupla<T>{
 
     public void removeInicio(){
         if(primeiroNo == null){
-            System.out.println("Listavazia!");
+            System.out.println("Lista Vazia!");
         }else{
             System.out.println("Dado: " + primeiroNo.getDado() + " removido!");
             //T dadoTemp = primeiroNo.getDado();
@@ -66,10 +66,39 @@ public class ListaDupla<T>{
         novoNo.setProximoNo(atual);
         novoNo.setAnteriorNo(anterior);
 
-        anterior.setAnteriorNo(anterior);
+        anterior.setProximoNo(novoNo);
         atual.setAnteriorNo(novoNo);
         atualizaIndice();
         tamanho++;
+    }
+
+    public void removeMeio (int posicao){
+        if (posicao <= 0){
+            removeInicio();
+            return;
+        }
+        if (posicao >= tamanho-1){
+            removeFinal();
+            return;
+        }
+
+        NoDuplo<T> atual = primeiroNo;
+        int indice = 0;
+
+        while ( atual != null && indice < posicao){
+            atual = atual.getProximoNo();
+            indice++;
+        }
+
+        NoDuplo<T> anterior = atual.getAnteriorNo();
+        NoDuplo<T> proximo = atual.getProximoNo();
+
+        anterior.setProximoNo(proximo);
+        proximo.setAnteriorNo(anterior);
+
+        System.out.println("Dado: "+ atual.getDado() + " removido!");
+        atualizaIndice();
+        tamanho--;
     }
 
     public void addFinal(T dado){
