@@ -6,13 +6,11 @@ public class Principal {
         lista.addInicio("Rafael");
         lista.addInicio("Miguel");
         lista.addFinal("Gabriel");
+        lista.addFinal("Daniel");
 
         lista.imprimeLista();
 
-        lista.removeInicio();
-        lista.imprimeLista();
-        
-        lista.removeFinal();
+        lista.addMeio("Pedro", 2);
 
         lista.imprimeLista();
     }

@@ -42,6 +42,36 @@ public class ListaDupla<T>{
         tamanho--;
     }
 
+
+    public void addMeio (T dado, int posicao){
+        if (posicao == 0){
+            addInicio(dado);
+            return;
+        }
+        if (posicao >= tamanho){
+            addFinal(dado);
+            return;
+        }
+
+        NoDuplo<T> novoNo = new NoDuplo<T>(dado);
+        NoDuplo<T> atual = primeiroNo;
+        int indice = 0;
+
+        while (atual != null && indice < posicao){
+            atual = atual.getProximoNo();
+            indice++;
+        }
+
+        NoDuplo<T> anterior = atual.getAnteriorNo();
+        novoNo.setProximoNo(atual);
+        novoNo.setAnteriorNo(anterior);
+
+        anterior.setAnteriorNo(anterior);
+        atual.setAnteriorNo(novoNo);
+        atualizaIndice();
+        tamanho++;
+    }
+
     public void addFinal(T dado){
         NoDuplo<T> novoNo = new NoDuplo<T>(dado);
         if(ultimoNo ==  null){
