@@ -1,40 +1,70 @@
 public class MergeSort {
-    public void sort(int[] array) {
-        mergeSort(array, 0, array.length - 1);
-    }
 
-    private void mergeSort(int[] array, int start, int end) {
-        if (start < end) {
-            int middle = (start + end) / 2;
-            mergeSort(array, start, middle);
-            mergeSort(array, middle + 1, end);
-            merge(array, start, middle, end);
+    /**
+     * Ponto de entrada público para o MergeSort.
+     * Inicia a ordenação.
+     * @param arr O array de inteiros a ser ordenado.
+     * @param l O índice inicial (left).
+     * @param r O índice final (right).
+     */
+    public void sort(int[] arr, int l, int r) {
+        if (l < r) {
+            // Encontra o ponto do meio
+            int m = l + (r - l) / 2; // Maneira mais segura de calcular o meio
+
+            // Ordena as duas metades
+            sort(arr, l, m);
+            sort(arr, m + 1, r);
+
+            // Combina as duas metades ordenadas
+            merge(arr, l, m, r);
         }
     }
+    
+    // Método auxiliar para combinar (merge) as sub-matrizes
+    private void merge(int[] arr, int l, int m, int r) {
+        // 
+        
+        int n1 = m - l + 1;
+        int n2 = r - m;
 
-    private void merge(int[] array, int start, int middle, int end) {
-        int size = end - start + 1;
-        int[] temp = new int[size];
-        int left = start, right = middle + 1, index = 0;
+        // Cria arrays temporários
+        int[] L = new int[n1];
+        int[] R = new int[n2];
 
-        while (left <= middle && right <= end) {
-            if (array[left] <= array[right]) {
-                temp[index++] = array[left++];
+        // Copia dados para os arrays temporários L[] e R[]
+        for (int i = 0; i < n1; ++i)
+            L[i] = arr[l + i];
+        for (int j = 0; j < n2; ++j)
+            R[j] = arr[m + 1 + j];
+
+        int i = 0, j = 0; // Índices iniciais das sub-matrizes temporárias
+        int k = l;        // Índice inicial da sub-matriz mesclada
+
+        // Mescla L[] e R[] de volta em arr[l..r]
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                arr[k] = L[i];
+                i++;
             } else {
-                temp[index++] = array[right++];
+                arr[k] = R[j];
+                j++;
             }
+            k++;
         }
 
-        while (left <= middle) {
-            temp[index++] = array[left++];
+        // Copia os elementos restantes de L[], se houver
+        while (i < n1) {
+            arr[k] = L[i];
+            i++;
+            k++;
         }
 
-        while (right <= end) {
-            temp[index++] = array[right++];
-        }
-
-        for (int i = 0; i < size; i++) {
-            array[start + i] = temp[i];
+        // Copia os elementos restantes de R[], se houver
+        while (j < n2) {
+            arr[k] = R[j];
+            j++;
+            k++;
         }
     }
 }
