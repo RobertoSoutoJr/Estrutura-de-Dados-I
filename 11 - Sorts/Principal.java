@@ -8,7 +8,7 @@ public class Principal {
 
     public static void main(String[] args) {
         // Nome do arquivo de entrada: configurado para numeros_tamanho100.txt
-        String inputFileName = "numeros_tamanho100.txt"; 
+        String inputFileName = "numeros_tamanho10000000.txt"; 
         List<Integer> numbers = readNumbersFromFile(inputFileName);
 
         if (numbers == null) {
