@@ -7,8 +7,8 @@ public class Principal {
     private static List<String[]> results = new ArrayList<>();
 
     public static void main(String[] args) {
-        // Nome do arquivo de entrada: configurado para numeros_tamanho100.txt
-        String inputFileName = "numeros_tamanho10000000.txt"; 
+        // Nome do arquivo de entrada: configurado para numeros_tamanho10000000.txt
+        String inputFileName = "numeros_tamanho1000000.txt"; 
         List<Integer> numbers = readNumbersFromFile(inputFileName);
 
         if (numbers == null) {
@@ -24,7 +24,7 @@ public class Principal {
         long endTime;
         long durationNano;
 
-        // --- 1. Testando BubbleSort ---
+        // --- 1. Testando BubbleSort --- (Pode ser muito lento para 10 milhões)
         int[] bubbleArray = listToArray(numbers);
         startTime = System.nanoTime();
         BubbleSort bubbleSort = new BubbleSort();
@@ -34,7 +34,7 @@ public class Principal {
         addResult("BubbleSort", durationNano, inputFileName);
         writeNumbersToFile(arrayToList(bubbleArray), inputFileName, "bubble");
 
-        // --- 2. Testando InsertionSort ---
+        // --- 2. Testando InsertionSort --- (Pode ser muito lento para 10 milhões)
         int[] insertionArray = listToArray(numbers);
         startTime = System.nanoTime();
         InsertionSort insertionSort = new InsertionSort();
@@ -48,7 +48,6 @@ public class Principal {
         int[] quickArray = listToArray(numbers);
         startTime = System.nanoTime();
         QuickSort quickSort = new QuickSort();
-        // QuickSort precisa dos índices de início (0) e fim (length - 1)
         quickSort.sort(quickArray, 0, quickArray.length - 1); 
         endTime = System.nanoTime();
         durationNano = endTime - startTime;
@@ -57,7 +56,8 @@ public class Principal {
 
         // --- 4. Testando BucketSort ---
         List<Integer> bucketList = new ArrayList<>(numbers); 
-        int maxVal = Collections.max(numbers); 
+        // Lidar com exceção para lista vazia, embora readNumbersFromFile retorne null
+        int maxVal = numbers.isEmpty() ? 0 : Collections.max(numbers); 
         
         startTime = System.nanoTime();
         BucketSort bucketSort = new BucketSort();
@@ -71,14 +71,13 @@ public class Principal {
         int[] mergeArray = listToArray(numbers);
         startTime = System.nanoTime();
         MergeSort mergeSort = new MergeSort();
-        // MergeSort precisa dos índices de início (0) e fim (length - 1)
         mergeSort.sort(mergeArray, 0, mergeArray.length - 1); 
         endTime = System.nanoTime();
         durationNano = endTime - startTime;
         addResult("MergeSort", durationNano, inputFileName);
         writeNumbersToFile(arrayToList(mergeArray), inputFileName, "merge");
         
-        // --- 6. Testando SelectionSort ---
+        // --- 6. Testando SelectionSort --- (Pode ser muito lento para 10 milhões)
         int[] selectionArray = listToArray(numbers);
         startTime = System.nanoTime();
         SelectionSort selectionSort = new SelectionSort();
@@ -92,25 +91,39 @@ public class Principal {
         printFormattedResults();
     }
     
-    // Adiciona o resultado à lista, formatando o tempo
+    // MÉTODO MODIFICADO: Seleciona segundos ou milissegundos
     private static void addResult(String algorithm, long durationNano, String inputFileName) {
-        double durationMillis = durationNano / 1_000_000.0;
+        // 1 segundo em nanosegundos
+        final long ONE_SECOND_NANO = 1_000_000_000L; 
+        
+        String formattedTime;
+        
+        if (durationNano >= ONE_SECOND_NANO) {
+            // Tempo em segundos (s)
+            double durationSeconds = durationNano / 1_000_000_000.0;
+            formattedTime = String.format("%.3f s", durationSeconds);
+        } else {
+            // Tempo em milissegundos (ms)
+            double durationMillis = durationNano / 1_000_000.0;
+            formattedTime = String.format("%.3f ms", durationMillis);
+        }
+        
         String outputFileName = inputFileName.replace(".txt", "_" + algorithm.toLowerCase().replace("sort", "") + ".txt");
         
         results.add(new String[]{
             algorithm,
-            String.format("%.3f ms", durationMillis),
+            formattedTime, // Usa o tempo formatado (s ou ms)
             outputFileName
         });
     }
     
-    // Imprime todos os resultados em formato de tabela
+    // MÉTODO MODIFICADO: Aumenta o espaço para o tempo para acomodar valores maiores em segundos
     private static void printFormattedResults() {
         System.out.println("\n--- ⏱️ Tabela de Tempo de Execução ---");
         
-        // Define o cabeçalho
-        String header = String.format("| %-15s | %-12s | %-35s |", 
-                                      "ALGORITMO", "TEMPO (ms)", "ARQUIVO DE SAÍDA");
+        // Aumenta o espaço para TEMPO de 12 para 14 para caber algo como "123.456 s"
+        String header = String.format("| %-15s | %-14s | %-35s |", 
+                                      "ALGORITMO", "TEMPO", "ARQUIVO DE SAÍDA");
         
         // Imprime a linha de separação e o cabeçalho
         String separator = new String(new char[header.length()]).replace('\0', '-');
@@ -120,13 +133,13 @@ public class Principal {
         
         // Imprime os dados
         for (String[] result : results) {
-            System.out.println(String.format("| %-15s | %-12s | %-35s |", 
+            System.out.println(String.format("| %-15s | %-14s | %-35s |", 
                                               result[0], result[1], result[2]));
         }
         System.out.println(separator);
     }
-
-    // --- MÉTODOS AUXILIARES ---
+    
+    // --- MÉTODOS AUXILIARES (inalterados) ---
 
     private static List<Integer> readNumbersFromFile(String fileName) {
         List<Integer> numbers = new ArrayList<>();
